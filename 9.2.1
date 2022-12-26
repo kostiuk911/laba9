@@ -1,0 +1,59 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+
+struct Student
+{
+    std::string LastName;
+    int CourseNumber;
+    double AverageScore;
+};
+
+bool CompareStudents(const Student& x, const Student& y)
+{
+    int result = (y.AverageScore > x.AverageScore) ? 1 : ((y.AverageScore < x.AverageScore) ? -1 : 0);
+    if (result == 0)
+    {
+        result = (x.CourseNumber < y.CourseNumber) ? -1 : ((x.CourseNumber > y.CourseNumber) ? 1 : 0);
+    }
+    if (result == 0)
+    {
+        result = (y.LastName < x.LastName) ? 1 : ((y.LastName > x.LastName) ? -1 : 0);
+    }
+    return (result > 0);
+}
+
+int main()
+{
+    Student students[] =
+    {
+        { "Smith", 1, 85.5 },
+        { "Johnson", 2, 90.0 },
+        { "Williams", 3, 75.5 },
+        { "Jones", 1, 85.5 },
+        { "Brown", 2, 90.0 }
+    };
+
+    std::sort(students, students + 5, CompareStudents);
+
+    for (const Student& student : students)
+    {
+        std::cout << "Last name: " << student.LastName << ", Course number: " << student.CourseNumber << ", Average score: " << student.AverageScore << std::endl;
+    }
+
+    std::string lastName = "Jones";
+    int courseNumber = 1;
+    double averageScore = 85.5;
+    Student searchKey{ lastName, courseNumber, averageScore };
+    Student* searchResult = std::lower_bound(students, students + 5, searchKey, CompareStudents);
+    if (searchResult != students + 5 && searchResult->LastName == lastName && searchResult->CourseNumber == courseNumber && searchResult->AverageScore == averageScore)
+    {
+        std::cout << "Student with last name '" << lastName << "' found in course " << courseNumber << " with average score " << averageScore << std::endl;
+    }
+    else
+    {
+        std::cout << "Student with last name '" << lastName << "' not found in course " << courseNumber << " with average score " << averageScore << std::endl;
+    }
+
+    return 0;
+}
