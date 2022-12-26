@@ -1,0 +1,64 @@
+#include <iostream>
+#include <map>
+
+using namespace std;
+
+const int NUM_STUDENTS = 10;
+const int NUM_SUBJECTS = 3;
+
+struct Student {
+    string name;
+    int grades[NUM_SUBJECTS];
+};
+
+int main() {
+    Student students[NUM_STUDENTS] = {
+      {"Vlad", {4, 5, 3}},
+      {"Bob", {5, 4, 4}},
+      {"Natalya", {3, 3, 2}},
+      {"Oleg", {4, 4, 4}},
+      {"Eve", {5, 5, 5}},
+      {"Anna", {2, 2, 1}},
+      {"Roman", {4, 4, 3}},
+      {"Marush", {3, 4, 5}},
+      {"Igor", {5, 5, 4}},
+      {"Volodya", {4, 4, 4}}
+    };
+
+    map<string, int> goodGrades;
+    goodGrades["Physics"] = 0;
+    goodGrades["Mathematics"] = 0;
+    goodGrades["Chemistry"] = 0;
+
+    for (int i = 0; i < NUM_STUDENTS; i++) {
+        for (int j = 0; j < NUM_SUBJECTS; j++) {
+            if (students[i].grades[j] >= 4) {
+                if (j == 0) {
+                    goodGrades["Physics"]++;
+                }
+                else if (j == 1) {
+                    goodGrades["Mathematics"]++;
+                }
+                else {
+                    goodGrades["Chemistry"]++;
+                }
+            }
+        }
+    }
+
+    cout << "Number of good grades by subject:" << endl;
+    cout << "Physics: " << goodGrades["Physics"] << endl;
+    cout << "Mathematics: " << goodGrades["Mathematics"] << endl;
+    cout << "Chemistry: " << goodGrades["Chemistry"] << endl;
+
+    int numStudentsWithPerfectGrades = 0;
+    for (int i = 0; i < NUM_STUDENTS; i++) {
+        if (students[i].grades[0] == 5 && students[i].grades[1] == 5) {
+            numStudentsWithPerfectGrades++;
+        }
+    }
+    float percentage = (float)numStudentsWithPerfectGrades / NUM_STUDENTS * 100;
+    cout << "Percentage of students with perfect grades in physics and mathematics: " << percentage << "%" << endl;
+
+    return 0;
+}
