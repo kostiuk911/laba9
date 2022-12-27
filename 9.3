@@ -1,1 +1,68 @@
+#include <iostream>
+#include <string>
 
+using namespace std;
+
+struct Route {
+    string startPoint;
+    string endPoint;
+    int routeNumber;
+    int distance;
+    int time;
+    int fare;
+};
+
+void sortRoutes(Route[], int);
+void displayRoute(Route[], int, int);
+
+int main() {
+    Route routes[] = {
+      {"New York", "Chicago", 1, 891, 13, 150},
+      {"Los Angeles", "Miami", 2, 2347, 37, 300},
+      {"Seattle", "Boston", 3, 2944, 45, 350},
+      {"San Francisco", "Washington D.C.", 4, 2962, 46, 400},
+    };
+    const int numRoutes = sizeof(routes) / sizeof(routes[0]);
+
+    sortRoutes(routes, numRoutes);
+
+    cout << "All routes:" << endl;
+    for (int i = 0; i < numRoutes; i++) {
+        cout << routes[i].routeNumber << ": "
+            << routes[i].startPoint << " to " << routes[i].endPoint << endl;
+    }
+
+    int routeNumber;
+    cout << "Enter a route number: ";
+    cin >> routeNumber;
+
+    displayRoute(routes, numRoutes, routeNumber);
+
+    return 0;
+}
+
+void sortRoutes(Route routes[], int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (routes[j].routeNumber > routes[j + 1].routeNumber) {
+                Route temp = routes[j];
+                routes[j] = routes[j + 1];
+                routes[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void displayRoute(Route routes[], int size, int routeNumber) {
+    for (int i = 0; i < size; i++) {
+        if (routes[i].routeNumber == routeNumber) {
+            cout << "Route " << routeNumber << ": "
+                << routes[i].startPoint << " to " << routes[i].endPoint << endl;
+            cout << "Distance: " << routes[i].distance << " miles" << endl;
+            cout << "Estimated time: " << routes[i].time << " hours" << endl;
+            cout << "Fare: $" << routes[i].fare << endl;
+            return;
+        }
+    }
+    cout << "Route not found." << endl;
+}
